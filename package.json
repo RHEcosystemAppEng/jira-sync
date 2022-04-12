@@ -1,0 +1,23 @@
+{
+    "name": "jira-sync",
+    "version": "1.0.0",
+    "description": "Sync issues from source jira to target jira",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/RHEcosystemAppEng/jira-sync.git"
+    },
+    "author": "Saurabh Agarwal",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/RHEcosystemAppEng/jira-sync/issues"
+    },
+    "homepage": "https://github.com/RHEcosystemAppEng/jira-sync#readme",
+    "dependencies": {
+        "jira.js": "^2.12.0"
+    }
+}
