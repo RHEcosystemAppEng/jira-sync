@@ -1,0 +1,12 @@
+{
+  "source": {
+    "projectName": "WTOPS",
+    "filters": {
+      "jqlQueries": [],
+      "operand": "AND"
+    }
+  },
+  "target": {
+    "projectName": ""
+  }
+}

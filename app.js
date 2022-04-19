@@ -1,28 +1,9 @@
-import { Version2Client } from 'jira.js';
-
+import config from './config-utlis.js'
+import IssueLoader from './issue-loader.js';
 var sourceFields;
 var targetFields;
 var sourceIssues;
 var targetIssues;
-
-const sourceClient = new Version2Client({
-    host: `${process.env.sourceJiraUrl}`,
-    authentication: {
-        basic: {
-            email: process.env.sourceJiraUser,
-            apiToken: process.env.sourceJiraPassword,
-        },
-    },
-});
-
-
-const targetClient = new Version2Client({
-    host: `${process.env.targetJiraUrl}`,
-    authentication: {
-        personalAccessToken: process.env.targetJiraPassword,
-    },
-});
-
 
 
 async function getAllSourceFields() {
@@ -58,11 +39,14 @@ async function getAllSourceIssues() {
 }
 
 async function main() {
-    // const projects = await sourceClient.projects.getAllProjects();
-    // console.log(projects);
+    const sourceClient = await config.getSourceClient();
+    // const targetClient = config.getTargetClient();
+    const issueLoader = new IssueLoader(sourceClient, sourceClient);
 
-    const fields = await sourceClient.issueFields.getFields();
-    console.log(fields);
+    const projects = await issueLoader.fetchIssues();
+    console.log(projects)
+    // const fields = await sourceClient.issueFields.getFields();
+    // console.log(fields);
 
     // const issues = await sourceClient.issueSearch.searchForIssuesUsingJql();
     // console.log(issues);
