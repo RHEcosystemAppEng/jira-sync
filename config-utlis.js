@@ -101,7 +101,8 @@ async function getSourceClient() {
     try {
         return new Version2Client({
             host: _getSourceUrl(),
-            authentication: await _getSourceAuthJson()
+            authentication: await _getSourceAuthJson(),
+            newErrorHandling: true
         });
     } catch (e) {
         console.log(e)
@@ -114,6 +115,7 @@ async function getTargetClient() {
         return new Version2Client({
             host: _getTargetUrl(),
             authentication: await _getTargetAuthJson(),
+            newErrorHandling: true
         })
     } catch (e) {
         console.log(e)

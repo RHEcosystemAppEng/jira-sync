@@ -40,8 +40,8 @@ async function getAllSourceIssues() {
 
 async function main() {
     const sourceClient = await config.getSourceClient();
-    // const targetClient = config.getTargetClient();
-    const issueLoader = new IssueLoader(sourceClient, sourceClient);
+    const targetClient = await config.getTargetClient();
+    const issueLoader = new IssueLoader(targetClient, sourceClient);
 
     const projects = await issueLoader.fetchIssues();
     console.log(projects)

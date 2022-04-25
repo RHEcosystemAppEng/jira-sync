@@ -11,7 +11,7 @@ export default class IssueLoader {
     }
 
     async fetchIssues() {
-        // return this.srcClient.projects.getProject({projectIdOrKey: this.configJson.source.projectName});
+        // return this.srcClient.projects.getProject({projectIdOrKey: "CEP"});
         return this.srcClient.projects.getAllProjects();
     }
 }
