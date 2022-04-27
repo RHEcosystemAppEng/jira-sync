@@ -1,5 +1,7 @@
 import config from './config-utlis.js'
 import IssueLoader from './issue-loader.js';
+import {Version2Client} from 'jira.js';
+
 var sourceFields;
 var targetFields;
 var sourceIssues;
@@ -8,7 +10,7 @@ var targetIssues;
 
 async function getAllSourceFields() {
     if (!sourceFields) {
-        sourceFields = await adminClient.field.getAllFields();
+        sourceFields = await sourceClient.field.getAllFields();
         // await populateOptions();
     }
     return sourceFields;
@@ -30,7 +32,7 @@ async function getAllTargetIssues() {
     return targetIssues;
 }
 
-async function getAllSourceIssues() {
+async function getAllSourceIssues(sourceClient) {
     if (!sourceIssues) {
         sourceIssues = await sourceClient.issueSearch.searchForIssuesUsingJql();
         //await populateOptions();
@@ -39,12 +41,77 @@ async function getAllSourceIssues() {
 }
 
 async function main() {
-    const sourceClient = await config.getSourceClient();
-    const targetClient = await config.getTargetClient();
-    const issueLoader = new IssueLoader(targetClient, sourceClient);
+    // const sourceClient = await config.getSourceClient();
+    // const targetClient = await config.getTargetClient();
+    // const issueLoader = new IssueLoader(targetClient, sourceClient);
 
-    const projects = await issueLoader.fetchIssues();
-    console.log(projects)
+    // const sourceIssues = await getAllSourceIssues(sourceClient);
+    // console.log(sourceIssues);
+    const sourceClient = await new Version2Client({
+        newErrorHandling: true,
+        host: 'https://issues.redhat.com',
+        authentication: {
+            personalAccessToken: `${process.env.SOURCE_JIRA_TOKEN}`
+        },
+    });
+    const targetClient = await new Version2Client({
+        newErrorHandling: true,
+        host: `${process.env.TARGET_JIRA_URL}`,
+        authentication: {
+            basic: {
+                email: `${process.env.TARGET_JIRA_USERNAME}`,
+                apiToken: `${process.env.TARGET_JIRA_TOKEN}`
+            }
+        },
+    });
+    try {
+        let projectInDest = await targetClient.projects.getProject({projectIdOrKey: "CEP"});
+        console.log(projectInDest)
+        let projectInSrc = await sourceClient
+            .issueSearch.searchForIssuesUsingJqlPost(
+                {
+                    startAt: 47,
+                    jql: "project = \"Ecosystem Application Engineering\" AND component = Finastra AND status != Closed",
+                    fields: ["summary", "description"]
+                }
+            );
+
+        for (const e of projectInSrc.issues) {
+            const issueTypes = [];
+            const res = await targetClient.issueTypes.getIssueAllTypes()
+            res.forEach(e => {
+
+                if (e.hierarchyLevel > -1) {
+                    issueTypes.push({
+                        id: e.id,
+                        name: e.name,
+                        level: e.hierarchyLevel
+                    })
+                }
+            })
+            console.log(JSON.stringify(issueTypes))
+            await targetClient.issues.createIssue({
+                fields: {
+                    summary: e.fields.summary,
+                    description: e.fields.description,
+                    project: {
+                        id: projectInDest.id
+                    },
+                    issuetype: {
+                        id: issueTypes.find(e => e.name === "Task").id
+                    }
+                }
+            })
+            console.log(JSON.stringify(e));
+        }
+
+
+    } catch (e) {
+        console.log(e)
+    }
+
+    // const projects = await issueLoader.fetchIssues();
+    // console.log(projects)
     // const fields = await sourceClient.issueFields.getFields();
     // console.log(fields);
 
@@ -53,7 +120,6 @@ async function main() {
 }
 
 main();
-
 
 
 ////synchronize() {
@@ -75,8 +141,6 @@ main();
 
 
 // and if it exist update the jira
-
-
 
 
 //}
