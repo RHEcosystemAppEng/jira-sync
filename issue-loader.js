@@ -1,17 +1,19 @@
 import configUtils from './config-utlis.js';
 
 export default class IssueLoader {
-    srcClient = null;
-    destClient = null;
-    configJson = configUtils.loadConfigJson();
+  srcClient = null;
 
-    constructor(srcClient, destClient) {
-        this.srcClient = srcClient;
-        this.destClient = destClient;
-    }
+  destClient = null;
 
-    async fetchIssues() {
-        // return this.srcClient.projects.getProject({projectIdOrKey: "CEP"});
-        return await this.srcClient.projects.getAllProjects();
-    }
+  configJson = configUtils.loadConfigJson();
+
+  constructor(srcClient, destClient) {
+    this.srcClient = srcClient;
+    this.destClient = destClient;
+  }
+
+  async fetchIssues() {
+    // return this.srcClient.projects.getProject({projectIdOrKey: "CEP"});
+    return await this.srcClient.projects.getAllProjects();
+  }
 }

@@ -1,9 +1,11 @@
 {
-  "source": {
-    "projectName": "WTOPS",
-    "jqlQueries": ""
+  "srcTypesToTargetTypes": {
+    "Task": "Task",
+    "Sub-Task": "Subtask",
+    "Story": "Story",
+    "Epic": "Epic"
   },
-  "target": {
-    "projectName": ""
+  "srcUsersToTargetUsers": {
+    "jnirosha@redhat.com": "jude.niroshan11@gmail.com"
   }
 }

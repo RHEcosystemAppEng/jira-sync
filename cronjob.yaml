@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jira-syncer-app
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: jira-syncer-app
+              image: busybox:1.28
+              env:
+                - name: SOURCE_JIRA_URL
+                  value: xxx
+                - name: SOURCE_JIRA_TOKEN
+                  value: xxx
+                - name: TARGET_JIRA_URL
+                  value: xxx
+                - name: TARGET_JIRA_TOKEN
+                  value: xxx
+                - name: TARGET_JIRA_USERNAME
+                  value: xxx
+                - name: SOURCE_JIRA_USERNAME
+                  value: xxx
+                - name: SOURCE_JQL
+                  value: xxx
+                - name: TARGET_JQL
+                  value: xxx
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - node app.js
+          restartPolicy: OnFailure
