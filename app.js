@@ -14,6 +14,23 @@ const updatedIssueList = [];
 const destIssueTypes = [];
 const errors = [];
 
+
+// todo
+// Phase - 1
+// sync users  (compare with existing)
+// sync states  (compare with existing)
+// sync comments  (compare with existing)
+
+
+// project = FusionOperate AND assignee in (u728080, u727940, u726392, u726206, u726208, u728704, u728694)
+// project = FusionOperate AND filter=1845
+
+// Phase - 2
+// sync summary (compare with existing)
+// sync description  (compare with existing)
+// sync attachments  (copy only the web-links to the original source attachments)
+// sync priority  (compare with existing)
+// sync labels  (compare with existing, use the config)
 async function main() {
     console.log('Jira-Sync started!');
     validateEnvVariables()
