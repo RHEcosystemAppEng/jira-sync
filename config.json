@@ -6,6 +6,13 @@
     "Epic": "Epic"
   },
   "srcUsersToTargetUsers": {
-    "jnirosha@redhat.com": "jude.niroshan11@gmail.com"
+    "jude@redhat.com": "jude@abc.com"
+  },
+  "srcStatesToTargetStates": {
+    "Open": "To Do",
+    "In Progress": "In Progress",
+    "Pull Request": "Done",
+    "Review": "Done",
+    "Closed": "Done"
   }
 }

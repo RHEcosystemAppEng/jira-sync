@@ -121,12 +121,38 @@ async function getTargetClient() {
   }
 }
 
-async function loadConfigJson() {
+function loadConfigJson() {
   return JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 }
 
+function getTypeMappings() {
+  return getMappings("srcTypesToTargetTypes");
+}
+
+function getUserMappings() {
+  return getMappings("srcUsersToTargetUsers");
+}
+
+function getStateMappings() {
+  return getMappings("srcStatesToTargetStates");
+}
+
+function getMappings(attributeName) {
+  const mappings = {};
+  const configJson = loadConfigJson();
+  for (const [key, value] of Object.entries(configJson)) {
+    if(key === attributeName) {
+      for (const [k, v] of Object.entries(value)) {
+        mappings[k] = v;
+      }
+    }
+  }
+  return mappings;
+}
 export default {
   getSourceClient,
   getTargetClient,
-  loadConfigJson,
+  getTypeMappings,
+  getUserMappings,
+  getStateMappings,
 };
