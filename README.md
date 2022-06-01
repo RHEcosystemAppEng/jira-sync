@@ -41,3 +41,8 @@ It will help to run the program faster with less memory footprint.
 - Build the project using `npm install`
 - Set the required environment variables with correct values
 - Run the program using `node app.js`
+
+### deploy with helm
+
+- go to deploy/jira-sync
+- open the values file and configiure according to the comments.

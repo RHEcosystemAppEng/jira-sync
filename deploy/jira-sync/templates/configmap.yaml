@@ -1,0 +1,20 @@
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name | default .Release.Name }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  labels:
+    ns: {{ .Values.namespace | default .Release.Namespace }}
+    {{- range .Values.labels }}
+      {{ . | nindent 4 }}
+    {{- end }}
+apiVersion: v1
+data:
+        SOURCE_JIRA_URL: {{ .Values.source_jira_url }}
+        SOURCE_JIRA_USERNAME: {{ .Values.source_jira_username }}
+        SOURCE_JIRA_TOKEN: {{ .Values.source_jira_token }}
+        SOURCE_JQL: {{ .Values.source_jql }}
+        TARGET_JIRA_URL: {{ .Values.target_jira_url }}
+        TARGET_JIRA_USERNAME: {{ .Values.target_jira_username }}
+        TARGET_JIRA_TOKEN: {{ .Values.target_jira_token }}
+        TARGET_JIRA_PROJECT_CODE: {{ .Values.target_jira_project_code }}
+        TARGET_JQL: {{ .Values.target_jql }}

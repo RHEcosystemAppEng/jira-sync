@@ -1,0 +1,25 @@
+# -- the name of the Deployment (cronjob)
+name: jira-syncer
+# -- project name of where to deploy the resources
+namespace: jira-syncer
+# -- cronjob based argument to set the schedule trggering time
+schedule: "15 13 * * *"
+# -- list of labels to be added to the resources
+labels:
+ - 'app: jirasyncer'
+ - 'env: dev'
+# -- image pull policy [Always, IfNotPersist] - set to always if you want to use the latest image always
+imagePullPolicy: Always
+# -- image name and tag (the iamge of the jir syncer)
+image: quay.io/nnaamneh/jira-sync:1.0
+# -- Env Vars to be injected with the cronjob pods - those will be saved inside a configmap 
+# -- where its name is equal to the variable name in top of the file
+source_jira_url: https://issues.test.com
+source_jira_username: Jude.Nirshan@test.com;
+source_jira_token: ADASMKDALSKMDA
+source_jql: project = "test test test" AND component = test
+target_jira_url: https://jnirosha.atlassian.net/
+target_jira_username: jude.nirshan11@test.com
+target_jira_token: LKMASDLK;SAMDAS
+target_jira_project_code: NIM
+target_jql: project = Nimer

@@ -1,0 +1,67 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Values.name | default .Release.Name }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
+  labels:
+    ns: {{ .Values.namespace | default .Release.Namespace }}
+    {{- range .Values.labels }}
+      {{ . | nindent 4 }}
+    {{- end }}
+spec:
+  schedule: {{ .Values.schedule | default "00 00 * * *" }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: jira-syncer
+              env:
+                - name: SOURCE_JIRA_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: SOURCE_JIRA_URL
+                - name: SOURCE_JIRA_USERNAME
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: SOURCE_JIRA_USERNAME
+                - name: SOURCE_JIRA_TOKEN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: SOURCE_JIRA_TOKEN
+                - name: SOURCE_JQL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: SOURCE_JQL
+                - name: TARGET_JIRA_URL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: TARGET_JIRA_URL
+                - name: TARGET_JIRA_USERNAME
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: TARGET_JIRA_USERNAME
+                - name: TARGET_JIRA_TOKEN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: TARGET_JIRA_TOKEN
+                - name: TARGET_JIRA_PROJECT_CODE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: TARGET_JIRA_PROJECT_CODE
+                - name: TARGET_JQL
+                  valueFrom:
+                    configMapKeyRef:
+                      name: {{ .Values.name | default .Release.Name }}
+                      key: TARGET_JQL
+              imagePullPolicy: {{ .Values.imagePullPolicy }}
+              image: {{ .Values.image }}
+          restartPolicy: OnFailure
